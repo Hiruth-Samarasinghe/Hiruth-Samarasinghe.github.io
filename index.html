@@ -188,15 +188,13 @@ section{padding:90px 0;position:relative;z-index:1;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
 .thm-iframe-container{
     padding:0;
-    /* THM badge is 380x100 approx — we let it be natural */
-    background:#212C42; /* THM's own dark background so seam is invisible */
+    background:#212C42;
 }
 .thm-iframe-container iframe{
     display:block;
     width:100%;
     height:110px;
     border:none;
-    /* scale down slightly so it doesn't get clipped */
     transform-origin:top left;
 }
 .thm-badge-footer{
@@ -220,7 +218,7 @@ section{padding:90px 0;position:relative;z-index:1;}
     display:block;
 }
 .htb-card:hover{
-    border-color:#9fef00; /* HTB green */
+    border-color:#9fef00;
     transform:translateY(-3px);
 }
 .htb-card-header{
@@ -235,7 +233,7 @@ section{padding:90px 0;position:relative;z-index:1;}
     font-family:var(--mono);
     font-weight:700;
     font-size:15px;
-    color:#9fef00; /* HTB signature green */
+    color:#9fef00;
 }
 .htb-link-icon{
     font-family:var(--mono);
@@ -386,7 +384,7 @@ footer{text-align:center;padding:28px;color:var(--text-faint);font-size:13px;fon
 .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;}
 .reveal.in{opacity:1;transform:translateY(0);}
 
-/* THM USER ID NOTICE — shown inline next to badge */
+/* THM USER ID NOTICE */
 .thm-id-notice{
     font-family:var(--mono);
     font-size:11px;
@@ -400,6 +398,10 @@ footer{text-align:center;padding:28px;color:var(--text-faint);font-size:13px;fon
 }
 .thm-id-notice strong{color:var(--amber);}
 code{font-family:var(--mono);font-size:11px;background:var(--bg-raised-2);padding:2px 5px;border-radius:3px;color:var(--text);}
+
+/* RESUME MODAL VARIANTS — added for view resume button */
+.modal-pdf{width:100%;height:78vh;border-radius:8px;margin-top:4px;border:1px solid var(--border);background:#fff;box-shadow:0 8px 24px -8px rgba(0,0,0,.4);}
+.modal-box.modal-wide{max-width:760px;}
 </style>
 </head>
 <body>
@@ -434,6 +436,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--bg-raised-2);paddin
 </div>
 <div class="hero-actions">
 <a href="#projects" class="btn btn-primary">→ view projects</a>
+<button type="button" class="btn btn-ghost" onclick="openResume()">⤢ view resume</button>
 <a href="resume.pdf" class="btn btn-ghost" download>↓ download resume</a>
 </div>
 </div>
@@ -847,8 +850,20 @@ function openCert(src,title){
     document.body.style.overflow='hidden';
 }
 
+function openResume(){
+    document.getElementById('modalTag').textContent='RESUME';
+    document.getElementById('modalTitle').textContent='Hiruth Samarasinghe — Resume';
+    document.querySelector('.modal-box').classList.add('modal-wide');
+    document.getElementById('modalBody').innerHTML=`
+        <iframe class="modal-pdf" src="resume.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="Resume PDF" onerror="this.outerHTML='<p style=\\'color:var(--text-faint);font-family:var(--mono);font-size:13px;\\'>Could not load resume.pdf — make sure it is in the same folder as index.html.</p>'"></iframe>
+        <p style="margin-top:14px;"><a href="resume.pdf" download class="writeup-link">↓ download a copy</a></p>`;
+    document.getElementById('modalOverlay').classList.add('active');
+    document.body.style.overflow='hidden';
+}
+
 function closeModal(){
     document.getElementById('modalOverlay').classList.remove('active');
+    document.querySelector('.modal-box').classList.remove('modal-wide');
     document.body.style.overflow='';
 }
 document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target.id==='modalOverlay')closeModal();});
